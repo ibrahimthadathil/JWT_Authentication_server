@@ -1,6 +1,8 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import cookieparser from 'cookie-parser'
+import { connecDB } from './utils/connectDB'
 dotenv.config()
 
 const target = {
@@ -8,20 +10,17 @@ const target = {
       changeOrigin:true,
       Credentials:true
 }
+
+connecDB()
+
 const app = express()
- 
+
 app.use(cors(target))
+app.use(cookieparser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-app.post('/test/:id',(req,res)=>{
-try {
-      console.log(req.params.id)
- 
-} catch (error) {
-      console.log(error);
-      
-}})
+
 
 const PORT = process.env.PORT || 3000  
 app.listen(PORT,()=>{
