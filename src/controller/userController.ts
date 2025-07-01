@@ -1,9 +1,17 @@
 import { userModel } from "@/model/userModel";
+import { hashedPassword } from "@/utils/bcrypt";
 import bcrypt from "bcryptjs"
+import { Request, Response } from "express";
 
-const userSignup = async () => {
+const userSignup = async (req:Request,res:Response) => {
   try {
-    
+    const { name, email, password } = req.body
+    const existUser = await userModel.findOne({email})
+    if(!existUser){
+        const securePassword = await hashedPassword(password)
+        const newUser = await userModel.create({name,email,password:securePassword})
+          
+    }else res.status(400).json({message:'User Already exist'})
   } catch (error) {
 
   }
@@ -25,7 +33,7 @@ const userProfile = async () => {
     }
 }
 
-const userLogout = async () => {
+const userLogout = async (req:Request,res:Response) => {
     try {
         
     } catch (error) {
