@@ -1,6 +1,9 @@
+import { userModel } from "../model/userModel";
+import bcrypt from "bcryptjs"
+
 const userSignup = async () => {
   try {
-
+    
   } catch (error) {
 
   }
