@@ -1,13 +1,13 @@
 import express from "express";
-import userController from "@controller/userController/";
+import userController from "@/controller/userController";
+import { protectRoute } from "@/middleware/authMiddleware";
 
 const userRoute = express.Router();
 
-const { userSignup } = userController;
 
-userRoute.post("/signup",userSignup);
-userRoute.post("/signin");
-userRoute.post("/logout");
-userRoute.get("/profile");
+userRoute.post("/signup",userController.userSignup);
+userRoute.post("/signin",userController.userLogin);
+userRoute.post("/logout",userController.userLogout);
+userRoute.get("/profile",protectRoute,userController.userProfile);
 
 export default userRoute;
