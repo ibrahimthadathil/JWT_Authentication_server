@@ -1,3 +1,4 @@
+import { Authrequest } from "@/middleware/authMiddleware";
 import { userModel } from "@/model/userModel";
 import { comparePassword, hashedPassword } from "@/utils/bcrypt";
 import { setCookie } from "@/utils/cookie_utils";
@@ -6,6 +7,8 @@ import { Request, Response } from "express";
 
 const userSignup = async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
+    
     const { name, email, password } = req.body;
     const existUser = await userModel.findOne({ email });
     if (!existUser) {
@@ -45,11 +48,14 @@ const userLogin = async (req: Request, res: Response) => {
   } catch (error) {}
 };
 
-const userProfile = async (req:Request, res: Response) => {
+const userProfile = async (req:Authrequest, res: Response) => {
   try {
-    
-
-  } catch (error) {}
+    const user = await userModel.findById(req.userId?._id)
+    if(user)res.status(200).json({_id:user._id,email:user.email,name:user.name})
+    else res.status(404).json({message:'Not found'})
+  } catch (error) {
+    res.status(500)
+  }
 };
 
 const userLogout = async (req: Request, res: Response) => {

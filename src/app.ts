@@ -2,13 +2,14 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieparser from 'cookie-parser'
-import { connecDB } from './utils/connectDB'
+import { connecDB } from '@/utils/connectDB'
+import userRoute from '@/routes/userRoutes'
 dotenv.config()
 
 const target = {
-      origin: process.env.CLIENT_URL,
+      origin: "http://localhost:6001",
       changeOrigin:true,
-      Credentials:true
+      credentials:true
 }
 
 connecDB()
@@ -20,6 +21,7 @@ app.use(cookieparser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+app.use('/api/users',userRoute)
 
 
 const PORT = process.env.PORT || 3000  
