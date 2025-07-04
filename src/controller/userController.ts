@@ -6,9 +6,7 @@ import { generateToken } from "@/utils/jwt_utils";
 import { Request, Response } from "express";
 
 const userSignup = async (req: Request, res: Response) => {
-  try {
-    console.log(req.body);
-    
+  try {    
     const { name, email, password } = req.body;
     const existUser = await userModel.findOne({ email });
     if (!existUser) {
@@ -18,7 +16,7 @@ const userSignup = async (req: Request, res: Response) => {
         email,
         password: securePassword,
       });
-      const token = generateToken({ _id: newUser._id });
+      const token = generateToken({ _id: newUser._id });      
       if (token) setCookie(res, token);
       res
         .status(201)
